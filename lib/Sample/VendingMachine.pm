@@ -1,7 +1,44 @@
 package Sample::VendingMachine;
 use strict;
 use warnings;
+use feature 'switch';
+
 our $VERSION = '0.01';
+
+sub new {
+    my $class = shift;
+    my $self = {
+        total => 0,
+        change => 0,
+    };
+    return bless $self, $class;
+}
+
+sub total {
+    return $_[0]->{total};
+}
+
+sub change {
+    return $_[0]->{change};
+}
+
+sub put_in {
+    my ($self, $money) = @_;
+    given($money) {
+        when([10, 50, 100, 500, 1000]) {
+            $self->{total} += $money;
+        }
+        default {
+            $self->{change} += $money;
+        }
+    }
+}
+
+sub back {
+    my $self = shift;
+    $self->{change} = $self->total;
+    $self->{total} = 0;
+}
 
 1;
 __END__
