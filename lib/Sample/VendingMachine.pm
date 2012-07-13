@@ -70,6 +70,7 @@ sub buy {
         $slot->buy_by($self->total);
         $self->{total} -= $slot->price;
         $self->{sales} += $slot->price;
+        $self->back unless $self->buyables;
     }
 }
 

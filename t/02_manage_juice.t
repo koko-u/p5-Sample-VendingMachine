@@ -38,6 +38,30 @@ describe "自販機" => sub {
             };
         };
     };
+    context "150円を投入した状態" => sub {
+        before each => sub { $vm->put_in(100); $vm->put_in(50); };
+        it "全ての商品が買える" => sub {
+            my @buyables = $vm->buyables;
+            is_deeply(\@buyables, ['コーラ', '爽健美茶', '六甲のおいしい水']);
+        };
+        context "コーラ(120円)を買った" => sub {
+            before each => sub { $vm->buy('コーラ'); };
+            it "釣り銭30円が勝手に戻る" => sub {
+                is($vm->total, 0);
+                is($vm->change, 30);
+            };
+        };
+    };
+    context "500円を投入した状態" => sub {
+        before each => sub { $vm->put_in(500) };
+        context "コーラ(120円)を買った" => sub {
+            before each => sub { $vm->buy('コーラ'); };
+            it "380円がまだ合計額として残る" => sub {
+                is($vm->total, 380);
+                is($vm->change, 0);
+            };
+        };
+    };
 };
 
 runtests unless caller;
