@@ -40,6 +40,14 @@ sub back {
     $self->{total} = 0;
 }
 
+sub products {
+    return ('コーラ');
+}
+
+sub buyables {
+    return ();
+}
+
 1;
 __END__
 
