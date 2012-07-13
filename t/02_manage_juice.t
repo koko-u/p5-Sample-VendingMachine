@@ -21,6 +21,15 @@ describe "自販機" => sub {
             my @buyables = $vm->buyables;
             is_deeply(\@buyables, ['六甲のおいしい水']);
         };
+        context "購入ボタンを押した"  => sub {
+            before each => sub { $vm->buy('六甲のおいしい水'); };
+            it "合計額はゼロに" => sub {
+                is($vm->total, 0);
+            };
+            it "売上が100円" => sub {
+                is($vm->sales, 100);
+            };
+        };
     };
 };
 

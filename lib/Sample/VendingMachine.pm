@@ -12,6 +12,7 @@ sub new {
     my $self = {
         total => 0,
         change => 0,
+        sales => 0,
         slots => [
             Sample::Slot->new('コーラ', price => 120, stock => 5),
             Sample::Slot->new('爽健美茶', price => 150, stock => 10),
@@ -27,6 +28,10 @@ sub total {
 
 sub change {
     return $_[0]->{change};
+}
+
+sub sales {
+    return $_[0]->{sales};
 }
 
 sub put_in {
@@ -56,6 +61,16 @@ sub buyables {
     my $self = shift;
     return map { $_->name }
         grep { $_->buyable_by($self->total) } @{$self->{slots}};
+}
+
+sub buy {
+    my ($self, $name) = @_;
+    my ($slot) = grep { $_->name eq $name } @{$self->{slots}};
+    if (defined($slot) && $slot->buyable_by($self->total)) {
+        $slot->buy_by($self->total);
+        $self->{total} -= $slot->price;
+        $self->{sales} += $slot->price;
+    }
 }
 
 1;
