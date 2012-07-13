@@ -5,11 +5,18 @@ use feature 'switch';
 
 our $VERSION = '0.01';
 
+use Sample::Slot;
+
 sub new {
     my $class = shift;
     my $self = {
         total => 0,
         change => 0,
+        slots => [
+            Sample::Slot->new('コーラ', price => 120, stock => 5),
+            Sample::Slot->new('爽健美茶', price => 150, stock => 10),
+            Sample::Slot->new('六甲のおいしい水', price => 100, stock => 5),
+        ],
     };
     return bless $self, $class;
 }
@@ -41,11 +48,14 @@ sub back {
 }
 
 sub products {
-    return ('コーラ');
+    my $self = shift;
+    return map { $_->name } @{$self->{slots}};
 }
 
 sub buyables {
-    return ();
+    my $self = shift;
+    return map { $_->name }
+        grep { $_->buyable_by($self->total) } @{$self->{slots}};
 }
 
 1;
