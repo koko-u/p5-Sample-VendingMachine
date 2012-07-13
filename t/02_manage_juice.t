@@ -30,6 +30,13 @@ describe "自販機" => sub {
                 is($vm->sales, 100);
             };
         };
+        context "買えない商品のボタンを押した" => sub {
+            before each => sub { $vm->buy('コーラ'); };
+            it "何も起こらない" => sub {
+                is($vm->total, 100);
+                is($vm->sales, 0);
+            };
+        };
     };
 };
 
