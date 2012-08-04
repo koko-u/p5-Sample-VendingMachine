@@ -1,5 +1,8 @@
-use Test::Spec;
+use Test::Most;
 
-BEGIN { use_ok 'Sample::VendingMachine' }
+BEGIN {
+    use_ok 'Sample::VendingMachine';
+    use_ok 'Sample::Slot';
+}
 
-runtests unless caller;
+done_testing;
