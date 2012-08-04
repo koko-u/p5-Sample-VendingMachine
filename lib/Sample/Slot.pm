@@ -2,16 +2,20 @@ package Sample::Slot;
 use strict;
 use warnings;
 
+use Sub::Args;
 our $VERSION = '0.01';
 
 sub new {
     my $class = shift;
     my $name = shift;
+    my $args = args({
+        price => 1,
+        stock => 0,
+    }, @_);
     my $self = {
         name => $name,
-        price => 0,
-        stock => 0,
-        @_,
+        price => $args->{price},
+        stock => $args->{stock} // 0,
     };
     return bless $self, $class;
 }
